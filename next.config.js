@@ -21,15 +21,15 @@ const nextConfig = {
     // expose env to the browser
     BUILDER_PUBLIC_KEY: process.env.BUILDER_PUBLIC_KEY,
   },
-  // async redirects() {
-  //   return [
-  //     {
-  //       source: "/",
-  //       destination: "/home",
-  //       permanent: true,
-  //     },
-  //   ];
-  // },
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/home",
+        permanent: true,
+      },
+    ];
+  },
   reactStrictMode: true,
 };
 
