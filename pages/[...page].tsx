@@ -15,7 +15,7 @@ import {
   Initialize the Builder SDK with your organization's API Key
   The API Key can be found on: https://builder.io/account/settings
 */
-builder.init("828a91e99de34a80927fa56c4ddb868f");
+builder.init(String(process.env.NEXT_PUBLIC_BUILDER_IO_KEY));
 
 export async function getStaticProps({ params }: { params: any }) {
   /*
