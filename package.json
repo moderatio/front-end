@@ -12,7 +12,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@builder.io/personalization-utils": "0.0.7",
     "@builder.io/react": "^3.0.2",
+    "@builder.io/utils": "^1.0.4",
     "@types/node": "20.2.5",
     "@types/react": "18.2.7",
     "@types/react-dom": "18.2.4",
@@ -24,6 +26,7 @@
     "firebase": "^9.22.1",
     "firebase-admin": "^11.9.0",
     "next": "13.4.4",
+    "next-seo": "^6.0.0",
     "postcss": "8.4.24",
     "react": "18.2.0",
     "react-dom": "18.2.0",
