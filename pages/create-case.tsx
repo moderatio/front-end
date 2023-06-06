@@ -63,6 +63,12 @@ const CreateCasePage = () => {
         >
           add new field
         </button>
+
+        <div className="flex items-center m-auto">
+          <button className="mt-12 bg-mulberry rounded text-white p-2 px-5 font-bold ">
+            create case
+          </button>
+        </div>
       </div>
     </div>
   );
