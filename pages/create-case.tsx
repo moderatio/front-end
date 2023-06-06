@@ -9,6 +9,14 @@ const CreateCasePage = () => {
   const [summary, setSummary] = useState("");
   const [addresses, setAddresses] = useState<string[]>([""]);
 
+  const handleSumbit = () => {
+    console.log({
+      summary,
+      addresses,
+      problemStatement,
+    });
+  };
+
   return (
     <div className="w-full h-screen bg-[##e7e8ea]">
       <Navbar />
@@ -65,7 +73,12 @@ const CreateCasePage = () => {
         </button>
 
         <div className="flex items-center m-auto">
-          <button className="mt-12 bg-mulberry rounded text-white p-2 px-5 font-bold ">
+          <button
+            onClick={() => {
+              handleSumbit();
+            }}
+            className="mt-12 bg-mulberry rounded text-white p-2 px-5 font-bold "
+          >
             create case
           </button>
         </div>
