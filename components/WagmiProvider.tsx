@@ -5,6 +5,7 @@ import { SequenceConnector } from "@0xsequence/wagmi-connector";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { mainnet, polygon, optimism, arbitrum } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
+import { MetaMaskConnector } from "@wagmi/core/connectors/metaMask";
 
 const { chains, provider, webSocketProvider } = configureChains(
   [mainnet, polygon, optimism, arbitrum],
@@ -21,6 +22,7 @@ const connectors = [
       },
     },
   }),
+  new MetaMaskConnector(),
 ];
 
 // wagmi client setup. Note: we do not auto-connect here, but instead

@@ -1,3 +1,4 @@
+import { WalletsModal } from "@/components/WalletsModal";
 import Navbar from "../components/navbar";
 
 const CasesPage = () => {
@@ -10,7 +11,6 @@ const CasesPage = () => {
       <div className="max-w-[1200px] m-auto">
         <h1>cases</h1>
       </div>
-
       {/* Add your create case form or content here */}
     </div>
   );
