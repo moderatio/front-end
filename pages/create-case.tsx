@@ -1,8 +1,12 @@
 import { useState } from "react";
 import Navbar from "../components/navbar";
-import ReactQuill from "react-quill";
+import dynamic from "next/dynamic";
+
 import "react-quill/dist/quill.snow.css";
 import DynamicInputForm from "@/components/dynamicInputForm";
+const ReactQuill = dynamic(async () => await import("react-quill"), {
+  ssr: false,
+});
 
 const CreateCasePage = () => {
   const [problemStatement, setProblemStatement] = useState("");
