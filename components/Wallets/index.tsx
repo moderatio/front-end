@@ -15,7 +15,7 @@ export function Wallets() {
         <div className="flex flex-col">
           {connectors.map((connector) => (
             <button
-              className="p-3 bg-dark-blue text-white mb-2 "
+              className="p-3 bg-dark-blue text-white mb-2 rounded"
               disabled={!connector.ready}
               key={connector.id}
               onClick={() => connect({ connector })}
