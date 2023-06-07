@@ -1,9 +1,11 @@
 import { useState } from "react";
 import Navbar from "../components/navbar";
 import dynamic from "next/dynamic";
-
+import axios from "axios";
 import "react-quill/dist/quill.snow.css";
 import DynamicInputForm from "@/components/dynamicInputForm";
+import { useAccount } from "wagmi";
+
 const ReactQuill = dynamic(async () => await import("react-quill"), {
   ssr: false,
 });
@@ -11,14 +13,25 @@ const ReactQuill = dynamic(async () => await import("react-quill"), {
 const CreateCasePage = () => {
   const [problemStatement, setProblemStatement] = useState("");
   const [summary, setSummary] = useState("");
+  const { address } = useAccount();
   const [addresses, setAddresses] = useState<string[]>([""]);
 
-  const handleSumbit = () => {
-    console.log({
-      summary,
-      addresses,
-      problemStatement,
-    });
+  const handleSumbit = async () => {
+    console.log(summary, address, problemStatement);
+    await axios.post(
+      "/api/create-case",
+      {
+        summary,
+        addresses,
+        problemStatement,
+        creator: address,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
   };
 
   return (
