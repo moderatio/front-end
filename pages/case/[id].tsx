@@ -8,7 +8,6 @@ export default function Page() {
   const [, setData] = useState({});
 
   const fetchData = async () => {
-    console.log(router.query.id);
     const res = await axios.post("/api/get-case", {
       caseId: router.query.id,
     });

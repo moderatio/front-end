@@ -14,8 +14,6 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    console.log(req.body);
-
     // TODO: validate signature to check if it matches the creatorAddress
 
     const { caseId, comment, creatorAddress } = req.body;

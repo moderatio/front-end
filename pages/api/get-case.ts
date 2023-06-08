@@ -14,7 +14,6 @@ export default async function handler(
   try {
     const { caseId } = req.body;
 
-    console.log("case id", caseId);
     const caseDoc = await db.collection("cases").doc(caseId).get();
 
     if (!caseDoc.exists) {
