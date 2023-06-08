@@ -11,7 +11,7 @@ const CasesPage = () => {
       <Navbar />
 
       <div className="max-w-[1200px] m-auto">
-        <div className="mt-3">
+        <div className="mt-2">
           <h1>available cases. Either with a reached consensus or ongoing. </h1>
 
           <div className="flex flex-col">

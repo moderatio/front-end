@@ -29,7 +29,8 @@ export default async function handler(
       const data = doc.data();
       const comment: IComment = {
         id: doc.id,
-        comment: data.comment,
+        content: data.content,
+        createdAt: data.createdAt,
         creatorAddress: data.creatorAddress,
       };
       comments.push(comment);

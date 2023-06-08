@@ -1,12 +1,15 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { db } from "../../config/firebaseConfig";
 import { firestore } from "firebase-admin";
+import { verifyTypedData } from "ethers/lib/utils.js";
+import { domain, types } from "@/config/type.comment.data";
 
 interface CommentRequest extends NextApiRequest {
   body: {
     caseId: string;
-    comment: string;
+    content: string;
     creatorAddress: string;
+    signature: string;
   };
 }
 
@@ -16,8 +19,31 @@ export default async function handler(
 ) {
   try {
     // TODO: validate signature to check if it matches the creatorAddress
+    const { caseId, content, creatorAddress, signature } = req.body;
 
-    const { caseId, comment, creatorAddress } = req.body;
+    const signerAddress = verifyTypedData(
+      domain,
+      types,
+      {
+        caseId,
+        content,
+      },
+      signature
+    );
+
+    // check if signer is in array of commenters
+    const caseDoc = await db.collection("cases").doc(caseId).get();
+
+    if (!caseDoc.exists) {
+      res.status(404).json({ error: "Case not found." });
+      return;
+    }
+
+    const cas = caseDoc.data() as { addresses: string[] };
+    if (!cas.addresses.includes(signerAddress)) {
+      res.status(401).json({ error: "invalid signer." });
+      return;
+    }
 
     // Create a new comment document in Firestore
     const docRef = await db
@@ -25,7 +51,7 @@ export default async function handler(
       .doc(caseId)
       .collection("comments")
       .add({
-        comment,
+        content,
         creatorAddress,
         createdAt: new Date(),
       });

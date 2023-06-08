@@ -7,7 +7,11 @@ import "react-quill/dist/quill.snow.css";
 import { type ICase } from "@/types/case";
 import { useAccount } from "wagmi";
 import { toast } from "react-toastify";
+import { signTypedData } from "@wagmi/core";
+
 import { type IComment } from "@/types/comment";
+import { useCreateComment } from "@/lib/services/mutations/useCreateComment";
+import { domain, types } from "@/config/type.comment.data";
 
 const ReactQuill = dynamic(async () => await import("react-quill"), {
   ssr: false,
@@ -16,9 +20,10 @@ const ReactQuill = dynamic(async () => await import("react-quill"), {
 export default function Page() {
   const router = useRouter();
   const [data, setData] = useState<ICase>();
-  const [comment, setComment] = useState("");
+  const [content, setContent] = useState("");
   const [comments, setComments] = useState<IComment[]>();
   const { address } = useAccount();
+  const { mutate: create } = useCreateComment();
 
   const fetchData = async () => {
     const res = await axios.post("/api/get-case", {
@@ -33,16 +38,25 @@ export default function Page() {
   };
 
   const createComment = async () => {
-    try {
-      await axios.post("/api/comment-case", {
-        caseId: router.query.id,
-        comment,
-        creatorAddress: address,
-      });
-      toast.success("published comment");
-    } catch (e) {
-      toast.error("error commenting");
+    if (!address) {
+      toast.error("you must sign up with your wallet first");
+      return;
     }
+    const signature = await signTypedData({
+      domain,
+      value: {
+        caseId: String(router.query.id),
+        content,
+      },
+      types,
+    });
+
+    create({
+      caseId: String(router.query.id),
+      content,
+      creatorAddress: address,
+      signature,
+    });
   };
 
   useEffect(() => {
@@ -80,7 +94,7 @@ export default function Page() {
                 toolbar: false,
               }}
               className="bg-[#fff]  mt-3"
-              value={comm.comment}
+              value={comm.content}
               readOnly={true}
               theme={"snow"}
             />
@@ -97,8 +111,8 @@ export default function Page() {
 
         <div className="mb-12">
           <ReactQuill
-            value={comment}
-            onChange={setComment}
+            value={content}
+            onChange={setContent}
             className="bg-white mt-12"
             theme="snow"
           />

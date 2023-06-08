@@ -10,7 +10,7 @@ interface Props {
 
 const CaseItem = ({ ca, index }: Props) => {
   return (
-    <div className="  flex flex-col justify-center mt-3 p-3  px-3">
+    <div className="  flex flex-col justify-center mt-1 p-1 ">
       <Link href={`/case/${ca.id}`}>
         <h1 className="hover:underline">
           {`${index + 1}. `} {ca.summary}
