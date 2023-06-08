@@ -1,6 +1,7 @@
 import { type ICase } from "@/types/case";
 import { abrevAddress } from "@/lib/utils/abrevAddress";
 import Link from "next/link";
+import { formatTime } from "@/lib/utils/formatTime";
 
 interface Props {
   ca: ICase;
@@ -9,7 +10,7 @@ interface Props {
 
 const CaseItem = ({ ca, index }: Props) => {
   return (
-    <div className="  flex flex-col justify-center mt-3 p-3 border mx-3">
+    <div className="  flex flex-col justify-center mt-3 p-3  px-3">
       <Link href={`/case/${ca.id}`}>
         <h1 className="hover:underline">
           {`${index + 1}. `} {ca.summary}
@@ -21,6 +22,7 @@ const CaseItem = ({ ca, index }: Props) => {
           <span className=" bg-sky-blue text-sm text-[#0969DA] rounded px-1">
             {`${abrevAddress(ca.creator)}`}
           </span>
+          <span>, {formatTime(ca.createdAt._seconds)}</span>
         </span>
       </div>
     </div>

@@ -4,6 +4,6 @@ export interface ICase {
   addresses: string[];
   creator: string;
   problemStatement: string;
-  createdAt: any;
+  createdAt: { _seconds: number };
   commentsAmount: number;
 }
