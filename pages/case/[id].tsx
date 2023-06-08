@@ -79,7 +79,7 @@ export default function Page() {
               modules={{
                 toolbar: false,
               }}
-              className="bg-white mt-3 border-none"
+              className="bg-[#fff]  mt-3"
               value={comm.comment}
               readOnly={true}
               theme={"snow"}

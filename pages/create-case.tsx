@@ -1,12 +1,11 @@
 import { useState } from "react";
 import Navbar from "../components/navbar";
 import dynamic from "next/dynamic";
-import axios from "axios";
 import "react-quill/dist/quill.snow.css";
 import DynamicInputForm from "@/components/dynamicInputForm";
 import { useAccount } from "wagmi";
 import { toast } from "react-toastify";
-import { useRouter } from "next/router";
+import { useCreateCase } from "@/lib/services/mutations/useCreateCase";
 
 const ReactQuill = dynamic(async () => await import("react-quill"), {
   ssr: false,
@@ -17,29 +16,18 @@ const CreateCasePage = () => {
   const [summary, setSummary] = useState("");
   const { address } = useAccount();
   const [addresses, setAddresses] = useState<string[]>([""]);
-  const router = useRouter();
+  const { mutate: create } = useCreateCase();
 
   const handleSumbit = async () => {
-    try {
-      const res = await axios.post<{ id: string }>(
-        "/api/create-case",
-        {
-          summary,
-          addresses,
-          problemStatement,
-          creator: address,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      toast("case created", { type: "success" });
-      router.push(`case/${res.data.id}`);
-    } catch (err: any) {
-      toast(`error: ${String(err.message)}`, { type: "error" });
-    }
+    if (!address) toast.error("you must sign up with your wallet first");
+    else
+      create({
+        addresses,
+        creator: address,
+        problemStatement,
+        summary,
+        transactionHash: "",
+      });
   };
 
   return (
@@ -73,7 +61,7 @@ const CreateCasePage = () => {
         </p>
 
         <ReactQuill
-          className="bg-white mt-3"
+          className="bg-[#fff] border mt-3"
           theme="snow"
           value={problemStatement}
           onChange={setProblemStatement}

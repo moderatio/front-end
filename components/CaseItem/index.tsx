@@ -18,7 +18,10 @@ const CaseItem = ({ ca, index }: Props) => {
       </Link>
       <div className="text-[#6e8177] text-sm">
         <span>
-          {ca.commentsAmount} comments, created by:{" "}
+          {ca.commentsAmount > 1
+            ? `${ca.commentsAmount} comments`
+            : "1 comment"}
+          , created by:{" "}
           <span className=" bg-sky-blue text-sm text-[#0969DA] rounded px-1">
             {`${abrevAddress(ca.creator)}`}
           </span>

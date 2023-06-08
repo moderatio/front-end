@@ -7,6 +7,7 @@ interface CreateRequest extends NextApiRequest {
     addresses: string[];
     creator: string;
     problemStatement: string;
+    transactionHash: string;
   };
 }
 
