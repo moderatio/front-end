@@ -26,6 +26,7 @@ export default async function handler(
       .add({
         comment,
         creatorAddress,
+        createdAt: new Date(),
       });
 
     res.status(200).json({ id: docRef.id });
