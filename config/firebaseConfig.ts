@@ -3,7 +3,7 @@ const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
 
 if (!admin.apps.length) {
   admin.initializeApp({
-    credential: admin.credential.cert(String(serviceAccount)),
+    credential: admin.credential.cert(JSON.parse(String(serviceAccount))),
   });
 }
 
