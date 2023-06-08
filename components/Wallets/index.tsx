@@ -18,7 +18,9 @@ export function Wallets() {
               className="p-3 bg-dark-blue text-white mb-2 rounded"
               disabled={!connector.ready}
               key={connector.id}
-              onClick={() => connect({ connector })}
+              onClick={() => {
+                connect({ connector });
+              }}
             >
               {connector.name}
               {!connector.ready && " (unsupported)"}
