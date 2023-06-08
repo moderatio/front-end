@@ -6,6 +6,7 @@ import "react-quill/dist/quill.snow.css";
 import DynamicInputForm from "@/components/dynamicInputForm";
 import { useAccount } from "wagmi";
 import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 const ReactQuill = dynamic(async () => await import("react-quill"), {
   ssr: false,
@@ -16,11 +17,11 @@ const CreateCasePage = () => {
   const [summary, setSummary] = useState("");
   const { address } = useAccount();
   const [addresses, setAddresses] = useState<string[]>([""]);
+  const router = useRouter();
 
   const handleSumbit = async () => {
-    console.log(summary, address, problemStatement);
-    await axios
-      .post(
+    try {
+      const res = await axios.post<{ id: string }>(
         "/api/create-case",
         {
           summary,
@@ -33,11 +34,12 @@ const CreateCasePage = () => {
             "Content-Type": "application/json",
           },
         }
-      )
-      .catch((e: Error) => toast(`error: ${e.message}`, { type: "error" }))
-      .then(() => {
-        toast("case created", { type: "success" });
-      });
+      );
+      toast("case created", { type: "success" });
+      router.push(`case/${res.data.id}`);
+    } catch (err: any) {
+      toast(`error: ${String(err.message)}`, { type: "error" });
+    }
   };
 
   return (
