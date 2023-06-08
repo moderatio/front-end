@@ -5,6 +5,7 @@ import axios from "axios";
 import "react-quill/dist/quill.snow.css";
 import DynamicInputForm from "@/components/dynamicInputForm";
 import { useAccount } from "wagmi";
+import { toast } from "react-toastify";
 
 const ReactQuill = dynamic(async () => await import("react-quill"), {
   ssr: false,
@@ -18,20 +19,25 @@ const CreateCasePage = () => {
 
   const handleSumbit = async () => {
     console.log(summary, address, problemStatement);
-    await axios.post(
-      "/api/create-case",
-      {
-        summary,
-        addresses,
-        problemStatement,
-        creator: address,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
+    await axios
+      .post(
+        "/api/create-case",
+        {
+          summary,
+          addresses,
+          problemStatement,
+          creator: address,
         },
-      }
-    );
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .catch((e: Error) => toast(`error: ${e.message}`, { type: "error" }))
+      .then(() => {
+        toast("case created", { type: "success" });
+      });
   };
 
   return (
