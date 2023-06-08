@@ -25,7 +25,7 @@ const DynamicInputForm = ({ inputFields, setter }: Props) => {
           <input
             name="address"
             className=" appearance-none
-             border-gray
+             border
              mt-2
              w-1/3
              rounded py-2 px-3 text-gray-700 "

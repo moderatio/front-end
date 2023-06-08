@@ -8,9 +8,11 @@ module.exports = {
   theme: {
     colors: {
       white: "#F5F5F3",
+      creamy: "#e7e8ea",
       ebony: "#09081B",
       mulberry: "#F25C7D",
       java: "#05D6CA",
+      "sky-blue": "#DDF4FF",
       "fun-blue": "#02214B",
       "dark-blue": "#021541",
       "weird-orange": "#F56558",

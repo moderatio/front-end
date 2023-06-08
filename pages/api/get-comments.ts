@@ -20,6 +20,7 @@ export default async function handler(
       .collection("cases")
       .doc(caseId)
       .collection("comments")
+      .orderBy("createdAt", "asc")
       .get();
 
     const comments: IComment[] = [];

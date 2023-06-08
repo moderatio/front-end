@@ -61,7 +61,7 @@ const CreateCasePage = () => {
             onChange={(e) => {
               setSummary(e.target.value);
             }}
-            className=" appearance-none border-gray-200 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="summary"
             type="text"
             placeholder="summary"

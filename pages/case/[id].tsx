@@ -66,7 +66,7 @@ export default function Page() {
         />
         <div className="bg-white border border-[#444]/50 border-t-0">
           <span className="text-sm">created by: </span>
-          <span className=" bg-weird-orange text-sm rounded px-1">
+          <span className=" bg-sky-blue text-sm text-[#0969DA] rounded px-1">
             {`${String(data?.creator).slice(0, 3)}...${String(
               data?.creator
             ).slice(-3)}`}
@@ -86,7 +86,7 @@ export default function Page() {
             />
             <div className="bg-white border border-[#444]/50 border-t-0">
               <span className="text-sm">created by: </span>
-              <span className=" bg-weird-orange text-sm rounded px-1">
+              <span className=" bg-sky-blue text-sm text-[#0969DA] rounded px-1">
                 {`${String(comm.creatorAddress).slice(0, 3)}...${String(
                   comm.creatorAddress
                 ).slice(-3)}`}
@@ -95,21 +95,23 @@ export default function Page() {
           </>
         ))}
 
-        <ReactQuill
-          value={comment}
-          onChange={setComment}
-          className="bg-white mt-12"
-          theme="snow"
-        />
-        <div className="flex justify-end">
-          <button
-            onClick={() => {
-              createComment();
-            }}
-            className="bg-fun-blue text-white p-2 rounded mt-2"
-          >
-            publish
-          </button>
+        <div className="mb-12">
+          <ReactQuill
+            value={comment}
+            onChange={setComment}
+            className="bg-white mt-12"
+            theme="snow"
+          />
+          <div className="flex justify-end">
+            <button
+              onClick={() => {
+                createComment();
+              }}
+              className="bg-fun-blue text-white p-2 rounded mt-2"
+            >
+              publish
+            </button>
+          </div>
         </div>
       </div>
     </div>
