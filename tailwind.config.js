@@ -1,5 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  plugins: [
+    require("tailwindcss-font-inter"),
+    // ... other plugins
+  ],
+
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -19,6 +24,9 @@ module.exports = {
       "dark-pink": "#9D406E",
     },
     extend: {
+      fontFamily: {
+        sans: ["Roboto", "Arial", "sans-serif"],
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
@@ -26,5 +34,4 @@ module.exports = {
       },
     },
   },
-  plugins: [],
 };
