@@ -7,15 +7,12 @@ interface Props {
 
 const DynamicInputForm = ({ inputFields, setter }: Props) => {
   const handleFormChange = (index: number, value: string) => {
-    console.log(inputFields);
-    console.log("aqui", index, value);
     const updatedFields = [...inputFields];
     updatedFields[index] = value;
     setter(updatedFields);
   };
 
   const removeInput = (index: number) => {
-    console.log(inputFields);
     const updatedFields = [...inputFields];
     updatedFields.splice(index, 1);
     setter(updatedFields);
