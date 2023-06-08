@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { db } from "../../config/firebaseConfig";
+import { firestore } from "firebase-admin";
 
 interface CommentRequest extends NextApiRequest {
   body: {
@@ -27,6 +28,14 @@ export default async function handler(
         comment,
         creatorAddress,
         createdAt: new Date(),
+      });
+
+    // Increment the commentsAmount counter inside the case document
+    await db
+      .collection("cases")
+      .doc(caseId)
+      .update({
+        commentsAmount: firestore.FieldValue.increment(1),
       });
 
     res.status(200).json({ id: docRef.id });

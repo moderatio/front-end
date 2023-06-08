@@ -1,12 +1,14 @@
+import { type ICase } from "@/types/case";
+
 interface Props {
-  summary: string;
-  commentsAmount?: number;
+  ca: ICase;
 }
 
-const CaseItem = ({ summary }: Props) => {
+const CaseItem = ({ ca }: Props) => {
   return (
     <div className="flex flex-col justify-center mt-3 p-3 border mx-3">
-      <h1> {summary}</h1>
+      <h1> {ca.summary}</h1>
+      <span>comments: {ca.commentsAmount}</span>
     </div>
   );
 };

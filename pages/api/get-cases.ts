@@ -19,7 +19,6 @@ export default async function handler(
     const limitNumber = parseInt(limit, 10);
 
     const startAt = (pageNumber - 1) * limitNumber;
-
     const snapshot = await db
       .collection("cases")
       .orderBy("createdAt", "desc")
@@ -27,7 +26,7 @@ export default async function handler(
       .limit(limitNumber)
       .get();
 
-    const cases = snapshot.docs.map((doc) => doc.data());
+    const cases = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
     res.status(200).json({ cases });
   } catch (error) {

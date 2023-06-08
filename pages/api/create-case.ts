@@ -17,7 +17,9 @@ export default async function handler(
   try {
     // TODO: validate signature to check if it matches the creatorAddress
 
-    const docRef = await db.collection("cases").add({ ...req.body });
+    const docRef = await db
+      .collection("cases")
+      .add({ ...req.body, createdAt: new Date(), commentsAmount: 0 });
     res.status(200).json({ id: docRef.id });
   } catch (error) {
     console.error("Error adding document: ", error);
