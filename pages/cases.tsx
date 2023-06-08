@@ -15,7 +15,10 @@ const CasesPage = () => {
           <h1>available cases. Either with a reached consensus or ongoing. </h1>
 
           <div className="flex flex-col">
-            {!isLoading && data?.map((ca) => <CaseItem key={ca.id} ca={ca} />)}
+            {!isLoading &&
+              data?.map((ca, index) => (
+                <CaseItem index={index} key={ca.id} ca={ca} />
+              ))}
           </div>
         </div>
       </div>

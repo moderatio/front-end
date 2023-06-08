@@ -7,7 +7,7 @@ export function Wallets() {
   return (
     <div>
       <div className="flex items-start justify-between p-5  rounded-t">
-        <h3 className="text-3xl font-semibold">Modal Title</h3>
+        <h3 className="text-3xl font-semibold">Choose a wallet</h3>
       </div>
       {/* body */}
       <h1> choose a wallet to connect below. Oxsequence is the easiest</h1>
