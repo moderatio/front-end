@@ -14,6 +14,7 @@ import { useGetCase } from "@/lib/services/queries/useGetCase";
 import { useGetComments } from "@/lib/services/queries/useGetComments";
 import { Outcomes } from "@/components/Outcomes";
 import { AddressList } from "@/components/AddressList";
+import { ShimmerTitle, ShimmerText } from "react-shimmer-effects";
 
 const ReactQuill = dynamic(async () => await import("react-quill"), {
   ssr: false,
@@ -64,7 +65,10 @@ export default function Page() {
       <div className="w-full h-screen bg-[##e7e8ea]">
         <Navbar />
         <div className="max-w-[1200px] m-auto mt-5">
-          <span>loading...</span>
+          <div className="mt-5">
+            <ShimmerTitle line={5} gap={10} variant="primary" />
+            <ShimmerText line={5} gap={10} />
+          </div>
         </div>
       </div>
     );
@@ -73,8 +77,8 @@ export default function Page() {
   return (
     <div className="w-full h-screen bg-[##e7e8ea]">
       <Navbar />
-      <div className="max-w-[1200px] m-auto mt-5">
-        <h1 className="text-3xl ">{caseData?.summary}</h1>
+      <div className="max-w-[1200px] m-auto mt-3">
+        <h1 className="text-3xl mt-4">{caseData?.summary}</h1>
 
         <ReactQuill
           modules={{

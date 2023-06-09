@@ -1,10 +1,23 @@
 import CaseItem from "@/components/CaseItem";
 import Navbar from "../components/navbar";
 import { useGetCases } from "@/lib/services/queries/useGetCases";
+import { ShimmerText } from "react-shimmer-effects";
 
 const CasesPage = () => {
-  // Add your create case logic here
   const { data, isLoading } = useGetCases({ limit: 10, page: 1 });
+
+  if (isLoading)
+    return (
+      <div className="w-full h-screen bg-[##e7e8ea]">
+        <Navbar />
+
+        <div className="max-w-[1200px] m-auto">
+          <div className="mt-4">
+            <ShimmerText line={5} gap={10} />
+          </div>
+        </div>
+      </div>
+    );
 
   return (
     <div className="w-full h-screen bg-[##e7e8ea]">

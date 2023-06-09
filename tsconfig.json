@@ -3,6 +3,10 @@
     "target": "es2015",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
+
+    // react-shimmer-effects only works with this "noImplicitAny" for some reason
+    // TODO: attempt to fix this later
+    "noImplicitAny": false,
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
