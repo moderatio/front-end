@@ -14,7 +14,6 @@ import { useGetCase } from "@/lib/services/queries/useGetCase";
 import { useGetComments } from "@/lib/services/queries/useGetComments";
 import { Outcomes } from "@/components/Outcomes";
 import { AddressList } from "@/components/AddressList";
-import { Breathing } from "react-shimmer";
 
 const ReactQuill = dynamic(async () => await import("react-quill"), {
   ssr: false,
