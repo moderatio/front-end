@@ -12,6 +12,8 @@ import { domain, types } from "@/config/type.comment.data";
 import { formatTime } from "@/lib/utils/formatTime";
 import { useGetCase } from "@/lib/services/queries/useGetCase";
 import { useGetComments } from "@/lib/services/queries/useGetComments";
+import { Outcomes } from "@/components/Outcomes";
+import { AddressList } from "@/components/AddressList";
 
 const ReactQuill = dynamic(async () => await import("react-quill"), {
   ssr: false,
@@ -87,10 +89,9 @@ export default function Page() {
           </div>
         </div>
 
-        <div>
-          <div className="mt-2 border border-[#444]/50 w-1/3">
-            <span className="text-md">Possible outcomes available:</span>
-          </div>
+        <div className="flex flex-row w-full justify-between">
+          {caseData && <Outcomes caseData={caseData} />}
+          {caseData && <AddressList caseData={caseData} />}
         </div>
         {comments?.map((comm) => (
           <div key={comm.id}>
