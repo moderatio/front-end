@@ -12,9 +12,9 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    const { caseId } = req.body;
+    const { caseId } = req.query;
 
-    const caseDoc = await db.collection("cases").doc(caseId).get();
+    const caseDoc = await db.collection("cases").doc(String(caseId)).get();
 
     if (!caseDoc.exists) {
       res.status(404).json({ error: "Case not found." });

@@ -13,12 +13,12 @@ export default async function handler(
   res: NextApiResponse<IComment[] | { error: any }>
 ) {
   try {
-    const { caseId } = req.body;
+    const { caseId } = req.query;
 
     // Fetch all comments for the specified case from Firestore
     const snapshot = await db
       .collection("cases")
-      .doc(caseId)
+      .doc(String(caseId))
       .collection("comments")
       .orderBy("createdAt", "asc")
       .get();

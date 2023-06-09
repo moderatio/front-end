@@ -20,22 +20,23 @@ const ReactQuill = dynamic(async () => await import("react-quill"), {
 
 export default function Page() {
   const router = useRouter();
-  const [data, setData] = useState<ICase>();
+  const [caseData, setCaseData] = useState<ICase>();
   const [content, setContent] = useState("");
   const [comments, setComments] = useState<IComment[]>();
   const { address } = useAccount();
   const { mutate: create } = useCreateComment();
 
   const fetchData = async () => {
-    const res = await axios.post("/api/get-case", {
-      caseId: router.query.id,
+    const res = await axios.get("/api/get-case", {
+      params: { caseId: router.query.id },
     });
-    const commentsRes = await axios.post("/api/get-comments", {
-      caseId: router.query.id,
+
+    const commentsRes = await axios.get("/api/get-comments", {
+      params: { caseId: router.query.id },
     });
 
     setComments(commentsRes.data);
-    setData(res.data);
+    setCaseData(res.data);
   };
 
   const createComment = async () => {
@@ -68,14 +69,14 @@ export default function Page() {
     <div className="w-full h-screen bg-[##e7e8ea]">
       <Navbar />
       <div className="max-w-[1200px] m-auto mt-5">
-        <h1 className="text-3xl ">{data?.summary}</h1>
+        <h1 className="text-3xl ">{caseData?.summary}</h1>
 
         <ReactQuill
           modules={{
             toolbar: false,
           }}
           className="bg-[#fff] mt-3 border-none"
-          value={data?.problemStatement}
+          value={caseData?.problemStatement}
           readOnly={true}
           theme={"snow"}
         />
@@ -83,15 +84,21 @@ export default function Page() {
           <div className="ml-2 text-sm">
             <span>created by: </span>
             <span className="  bg-sky-blue text-sm text-[#0969DA] rounded px-1">
-              {`${String(data?.creator).slice(0, 3)}...${String(
-                data?.creator
+              {`${String(caseData?.creator).slice(0, 3)}...${String(
+                caseData?.creator
               ).slice(-3)}`}
             </span>
             <span>
-              , {data?.createdAt && formatTime(data?.createdAt._seconds)}
+              ,{" "}
+              {caseData?.createdAt && formatTime(caseData?.createdAt._seconds)}
             </span>
           </div>
         </div>
+
+        <div className="mt-2">
+          <span className="text-md">Possible outcomes available</span>
+        </div>
+
         {comments?.map((comm) => (
           <>
             <ReactQuill
