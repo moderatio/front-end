@@ -21,6 +21,7 @@ const CreateCasePage = () => {
   const { mutate: create } = useCreateCase();
 
   const handleSubmit = async () => {
+    // TODO: use transactionHash of created contract to assing in back-end the contractId
     if (!address) toast.error("you must sign up with your wallet first");
     else
       create({

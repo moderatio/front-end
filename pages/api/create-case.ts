@@ -17,8 +17,6 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    // TODO: validate signature to check if it matches the creatorAddress
-
     const docRef = await db
       .collection("cases")
       .add({ ...req.body, createdAt: new Date(), commentsAmount: 0 });

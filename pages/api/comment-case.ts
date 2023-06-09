@@ -18,7 +18,6 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    // TODO: validate signature to check if it matches the creatorAddress
     const { caseId, content, creatorAddress, signature } = req.body;
 
     const signerAddress = verifyTypedData(
@@ -31,7 +30,8 @@ export default async function handler(
       signature
     );
 
-    // check if signer is in array of commenters
+    // check if signer is in array of contextProviders
+    // TODO: check against onchain data
     const caseDoc = await db.collection("cases").doc(caseId).get();
 
     if (!caseDoc.exists) {
