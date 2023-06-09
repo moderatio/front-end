@@ -1,6 +1,6 @@
 import Navbar from "@/components/navbar";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
 import { useAccount } from "wagmi";
@@ -55,10 +55,6 @@ export default function Page() {
       signature,
     });
   };
-
-  useEffect(() => {
-    console.log(caseData);
-  }, [caseData]);
 
   if (isLoadingCase || isLoadingComments) {
     return (
