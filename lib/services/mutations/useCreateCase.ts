@@ -7,6 +7,7 @@ import Router from "next/router";
 interface Params {
   summary: string;
   addresses: string[];
+  outcomes: string[];
   creator: string;
   problemStatement: string;
   transactionHash: string;
@@ -14,7 +15,7 @@ interface Params {
 
 const createCase = async (params: Params) => {
   try {
-    const { summary, addresses, problemStatement, creator } = params;
+    const { summary, addresses, problemStatement, creator, outcomes } = params;
     const res = await axios.post<{ id: string }>(
       "/api/create-case",
       {
@@ -22,6 +23,7 @@ const createCase = async (params: Params) => {
         addresses,
         problemStatement,
         creator,
+        outcomes,
       },
       {
         headers: {

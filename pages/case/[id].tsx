@@ -12,6 +12,7 @@ import { signTypedData } from "@wagmi/core";
 import { type IComment } from "@/types/comment";
 import { useCreateComment } from "@/lib/services/mutations/useCreateComment";
 import { domain, types } from "@/config/type.comment.data";
+import { formatTime } from "@/lib/utils/formatTime";
 
 const ReactQuill = dynamic(async () => await import("react-quill"), {
   ssr: false,
@@ -73,18 +74,23 @@ export default function Page() {
           modules={{
             toolbar: false,
           }}
-          className="bg-white mt-3 border-none"
+          className="bg-[#fff] mt-3 border-none"
           value={data?.problemStatement}
           readOnly={true}
           theme={"snow"}
         />
-        <div className="bg-white border border-[#444]/50 border-t-0">
-          <span className="text-sm">created by: </span>
-          <span className=" bg-sky-blue text-sm text-[#0969DA] rounded px-1">
-            {`${String(data?.creator).slice(0, 3)}...${String(
-              data?.creator
-            ).slice(-3)}`}
-          </span>
+        <div className=" bg-white border border-[#444]/50 border-t-0">
+          <div className="ml-2 text-sm">
+            <span>created by: </span>
+            <span className="  bg-sky-blue text-sm text-[#0969DA] rounded px-1">
+              {`${String(data?.creator).slice(0, 3)}...${String(
+                data?.creator
+              ).slice(-3)}`}
+            </span>
+            <span>
+              , {data?.createdAt && formatTime(data?.createdAt._seconds)}
+            </span>
+          </div>
         </div>
         {comments?.map((comm) => (
           <>
@@ -99,12 +105,15 @@ export default function Page() {
               theme={"snow"}
             />
             <div className="bg-white border border-[#444]/50 border-t-0">
-              <span className="text-sm">created by: </span>
-              <span className=" bg-sky-blue text-sm text-[#0969DA] rounded px-1">
-                {`${String(comm.creatorAddress).slice(0, 3)}...${String(
-                  comm.creatorAddress
-                ).slice(-3)}`}
-              </span>
+              <div className="ml-2 text-sm">
+                <span className="">created by: </span>
+                <span className=" bg-sky-blue text-sm text-[#0969DA] rounded px-1">
+                  {`${String(comm.creatorAddress).slice(0, 3)}...${String(
+                    comm.creatorAddress
+                  ).slice(-3)}`}
+                </span>
+                <span>, {formatTime(comm.createdAt._seconds)}</span>
+              </div>
             </div>
           </>
         ))}
@@ -113,7 +122,7 @@ export default function Page() {
           <ReactQuill
             value={content}
             onChange={setContent}
-            className="bg-white mt-12"
+            className="bg-[#fff] mt-12"
             theme="snow"
           />
           <div className="flex justify-end">

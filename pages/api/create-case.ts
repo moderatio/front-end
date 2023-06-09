@@ -5,6 +5,7 @@ interface CreateRequest extends NextApiRequest {
   body: {
     summary: string;
     addresses: string[];
+    outcomes: string[];
     creator: string;
     problemStatement: string;
     transactionHash: string;

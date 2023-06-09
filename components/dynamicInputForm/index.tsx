@@ -3,9 +3,10 @@ import { type Dispatch, type SetStateAction } from "react";
 interface Props {
   inputFields: string[];
   setter: Dispatch<SetStateAction<string[]>>;
+  label: string;
 }
 
-const DynamicInputForm = ({ inputFields, setter }: Props) => {
+const DynamicInputForm = ({ inputFields, label, setter }: Props) => {
   const handleFormChange = (index: number, value: string) => {
     const updatedFields = [...inputFields];
     updatedFields[index] = value;
@@ -29,7 +30,7 @@ const DynamicInputForm = ({ inputFields, setter }: Props) => {
              mt-2
              w-1/3
              rounded py-2 px-3 text-gray-700 "
-            placeholder={`address ${index + 1}`}
+            placeholder={`${label} ${index + 1}`}
             value={input}
             onChange={(e) => {
               handleFormChange(index, e.target.value);

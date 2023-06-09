@@ -13,15 +13,18 @@ const ReactQuill = dynamic(async () => await import("react-quill"), {
 
 const CreateCasePage = () => {
   const [problemStatement, setProblemStatement] = useState("");
+
   const [summary, setSummary] = useState("");
   const { address } = useAccount();
   const [addresses, setAddresses] = useState<string[]>([""]);
+  const [outcomes, setOutcomes] = useState<string[]>([""]);
   const { mutate: create } = useCreateCase();
 
-  const handleSumbit = async () => {
+  const handleSubmit = async () => {
     if (!address) toast.error("you must sign up with your wallet first");
     else
       create({
+        outcomes,
         addresses,
         creator: address,
         problemStatement,
@@ -70,10 +73,15 @@ const CreateCasePage = () => {
         <p className="mt-5">
           It is also necessary to define the participants who will provide more
           context so the AI can elaborate on it and not be biased to a
-          conclusion.
+          conclusion. Only these addresses will be able to create comments in
+          your case.
         </p>
 
-        <DynamicInputForm inputFields={addresses} setter={setAddresses} />
+        <DynamicInputForm
+          label="address"
+          inputFields={addresses}
+          setter={setAddresses}
+        />
         <button
           onClick={() => {
             const updatedAddresses = [...addresses];
@@ -82,13 +90,33 @@ const CreateCasePage = () => {
           }}
           className="bg-dark-blue font-bold text-white p-2 rounded mt-2"
         >
-          add new field
+          add new address
+        </button>
+        <p className="mt-5">
+          The outcomes also must be pre-determined below. The AI will ponder
+          which one to choose.
+        </p>
+
+        <DynamicInputForm
+          label="outcome"
+          inputFields={outcomes}
+          setter={setOutcomes}
+        />
+        <button
+          onClick={() => {
+            const updateOutcomes = [...outcomes];
+            updateOutcomes.push("");
+            setOutcomes(updateOutcomes);
+          }}
+          className="bg-dark-blue font-bold text-white p-2 rounded mt-2"
+        >
+          add new outcomes
         </button>
 
         <div className="flex items-center m-auto">
           <button
             onClick={() => {
-              handleSumbit();
+              handleSubmit();
             }}
             className="mt-12 bg-mulberry rounded text-white p-2 px-5 font-bold "
           >
