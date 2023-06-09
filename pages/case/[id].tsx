@@ -1,18 +1,17 @@
 import Navbar from "@/components/navbar";
-import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
-import { type ICase } from "@/types/case";
 import { useAccount } from "wagmi";
 import { toast } from "react-toastify";
 import { signTypedData } from "@wagmi/core";
 
-import { type IComment } from "@/types/comment";
 import { useCreateComment } from "@/lib/services/mutations/useCreateComment";
 import { domain, types } from "@/config/type.comment.data";
 import { formatTime } from "@/lib/utils/formatTime";
+import { useGetCase } from "@/lib/services/queries/useGetCase";
+import { useGetComments } from "@/lib/services/queries/useGetComments";
 
 const ReactQuill = dynamic(async () => await import("react-quill"), {
   ssr: false,
@@ -20,24 +19,17 @@ const ReactQuill = dynamic(async () => await import("react-quill"), {
 
 export default function Page() {
   const router = useRouter();
-  const [caseData, setCaseData] = useState<ICase>();
   const [content, setContent] = useState("");
-  const [comments, setComments] = useState<IComment[]>();
   const { address } = useAccount();
   const { mutate: create } = useCreateComment();
 
-  const fetchData = async () => {
-    const res = await axios.get("/api/get-case", {
-      params: { caseId: router.query.id },
-    });
+  const { data: caseData } = useGetCase({
+    caseId: String(router.query.id),
+  });
 
-    const commentsRes = await axios.get("/api/get-comments", {
-      params: { caseId: router.query.id },
-    });
-
-    setComments(commentsRes.data);
-    setCaseData(res.data);
-  };
+  const { data: comments } = useGetComments({
+    caseId: String(router.query.id),
+  });
 
   const createComment = async () => {
     if (!address) {
@@ -62,8 +54,8 @@ export default function Page() {
   };
 
   useEffect(() => {
-    if (router.query.id) fetchData();
-  }, [router.query.id]);
+    console.log(caseData);
+  }, [caseData]);
 
   return (
     <div className="w-full h-screen bg-[##e7e8ea]">
@@ -95,12 +87,13 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="mt-2">
-          <span className="text-md">Possible outcomes available</span>
+        <div>
+          <div className="mt-2 border border-[#444]/50 w-1/3">
+            <span className="text-md">Possible outcomes available:</span>
+          </div>
         </div>
-
         {comments?.map((comm) => (
-          <>
+          <div key={comm.id}>
             <ReactQuill
               key={comm?.id}
               modules={{
@@ -122,7 +115,7 @@ export default function Page() {
                 <span>, {formatTime(comm.createdAt._seconds)}</span>
               </div>
             </div>
-          </>
+          </div>
         ))}
 
         <div className="mb-12">
