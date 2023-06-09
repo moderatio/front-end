@@ -14,6 +14,7 @@ import { useGetCase } from "@/lib/services/queries/useGetCase";
 import { useGetComments } from "@/lib/services/queries/useGetComments";
 import { Outcomes } from "@/components/Outcomes";
 import { AddressList } from "@/components/AddressList";
+import { Breathing } from "react-shimmer";
 
 const ReactQuill = dynamic(async () => await import("react-quill"), {
   ssr: false,
@@ -25,11 +26,11 @@ export default function Page() {
   const { address } = useAccount();
   const { mutate: create } = useCreateComment();
 
-  const { data: caseData } = useGetCase({
+  const { data: caseData, isLoading: isLoadingCase } = useGetCase({
     caseId: String(router.query.id),
   });
 
-  const { data: comments } = useGetComments({
+  const { data: comments, isLoading: isLoadingComments } = useGetComments({
     caseId: String(router.query.id),
   });
 
@@ -58,6 +59,17 @@ export default function Page() {
   useEffect(() => {
     console.log(caseData);
   }, [caseData]);
+
+  if (isLoadingCase || isLoadingComments) {
+    return (
+      <div className="w-full h-screen bg-[##e7e8ea]">
+        <Navbar />
+        <div className="max-w-[1200px] m-auto mt-5">
+          <span>loading...</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full h-screen bg-[##e7e8ea]">
