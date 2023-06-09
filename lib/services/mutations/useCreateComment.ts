@@ -35,7 +35,6 @@ const useCreateComment = () => {
       },
 
       onError: (err: any) => {
-        console.log("caiu aqui", err);
         if (err.response.data.error) toast.error(err.response.data.error);
         else toast.error("error publishing comment");
       },

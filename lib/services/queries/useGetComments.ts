@@ -8,7 +8,6 @@ interface Params {
 }
 
 const getComments = async (params: Params) => {
-  console.log("no case", params);
   const { data } = await axios.get<IComment[]>(`/api/get-comments/`, {
     params,
   });
