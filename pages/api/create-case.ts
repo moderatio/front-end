@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { db } from "../../config/firebaseConfig";
-import { ethers } from "ethers";
 
 interface CreateRequest extends NextApiRequest {
   body: {
@@ -19,7 +18,6 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-
     // wait for 1 block of tx
     // const tx = await ethers.getDefaultProvider().getTransaction(req.body.transactionHash);
     // await tx.wait(1);

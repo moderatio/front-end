@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import { SequenceConnector } from "@0xsequence/wagmi-connector";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
-import { mainnet, polygon, optimism, arbitrum, polygonMumbai } from "wagmi/chains";
+import { polygonMumbai } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 import { MetaMaskConnector } from "@wagmi/core/connectors/metaMask";
 

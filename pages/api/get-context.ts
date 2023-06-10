@@ -95,7 +95,7 @@ Choice: 1
       },
       {
         headers: {
-          Authorization: `Bearer ${process.env.OPENAI_KEY}`,
+          Authorization: `Bearer ${String(process.env.OPENAI_KEY)}`,
         },
       }
     );

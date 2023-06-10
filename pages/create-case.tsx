@@ -8,7 +8,6 @@ import { toast } from "react-toastify";
 import { useCreateCase } from "@/lib/services/mutations/useCreateCase";
 import { useContractCreateCase } from "@/lib/wagmi/useContractCreateCase";
 
-
 const ReactQuill = dynamic(async () => await import("react-quill"), {
   ssr: false,
 });
@@ -21,9 +20,10 @@ const CreateCasePage = () => {
   const [addresses, setAddresses] = useState<string[]>([""]);
   const [outcomes, setOutcomes] = useState<string[]>([""]);
 
-
   const { mutate: create } = useCreateCase();
-  const { writeAsync: createCase } = useContractCreateCase({ participants: addresses });
+  const { writeAsync: createCase } = useContractCreateCase({
+    participants: addresses,
+  });
 
   const handleSubmit = async () => {
     // TODO: use transactionHash of created contract to assing in back-end the contractId
@@ -40,7 +40,7 @@ const CreateCasePage = () => {
         problemStatement,
         summary,
         // transactionHash: tx.hash,
-        contractCaseId
+        contractCaseId,
       });
     }
   };
