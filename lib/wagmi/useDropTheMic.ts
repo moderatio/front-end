@@ -1,7 +1,7 @@
 import { useContractWrite, usePrepareContractWrite } from "wagmi";
 import moderatioAbi from "@/abi/Moderatio.json";
 
-const contractAddress = "0xb7efa49ae159c463c2c4d3b9dad89435a3681a9e";
+const contractAddress = String(process.env.NEXT_PUBLIC_MODERATIO_ADDRESS);
 
 interface Args {
   caseId: number;
@@ -9,9 +9,9 @@ interface Args {
 
 export function useDropTheMic({ caseId }: Args) {
   const { config } = usePrepareContractWrite({
-    address: contractAddress,
+    address: `0x${contractAddress}`,
     abi: moderatioAbi,
-    functionName: "createCase",
+    functionName: "dropTheMic",
     args: [caseId],
   });
   return useContractWrite(config);

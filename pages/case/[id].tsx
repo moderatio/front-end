@@ -15,6 +15,7 @@ import { useGetComments } from "@/lib/services/queries/useGetComments";
 import { Outcomes } from "@/components/Outcomes";
 import { AddressList } from "@/components/AddressList";
 import { ShimmerTitle, ShimmerText } from "react-shimmer-effects";
+import { DropTheMic } from "@/components/DropTheMic";
 
 const ReactQuill = dynamic(async () => await import("react-quill"), {
   ssr: false,
@@ -70,85 +71,101 @@ export default function Page() {
     );
   }
 
-  return (
+  if (!caseData) {
     <div className="w-full h-screen bg-[##e7e8ea]">
       <Navbar />
-      <div className="max-w-[1200px] m-auto mt-3">
-        <h1 className="text-3xl mt-4">{caseData?.summary}</h1>
-
-        <ReactQuill
-          modules={{
-            toolbar: false,
-          }}
-          className="bg-[#fff] mt-3 border-none"
-          value={caseData?.problemStatement}
-          readOnly={true}
-          theme={"snow"}
-        />
-        <div className=" bg-white border border-[#444]/50 border-t-0">
-          <div className="ml-2 text-sm">
-            <span>created by: </span>
-            <span className="  bg-sky-blue text-sm text-[#0969DA] rounded px-1">
-              {`${String(caseData?.creator).slice(0, 3)}...${String(
-                caseData?.creator
-              ).slice(-3)}`}
-            </span>
-            <span>
-              ,{" "}
-              {caseData?.createdAt && formatTime(caseData?.createdAt._seconds)}
-            </span>
-          </div>
+      <div className="max-w-[1200px] m-auto mt-5">
+        <div className="mt-5">
+          <span>error fetching case data</span>
         </div>
+      </div>
+    </div>;
+  }
 
-        <div className="flex flex-row w-full justify-between">
-          {caseData && <Outcomes caseData={caseData} />}
-          {caseData && <AddressList caseData={caseData} />}
-        </div>
-        {comments?.map((comm) => (
-          <div key={comm.id}>
-            <ReactQuill
-              key={comm?.id}
-              modules={{
-                toolbar: false,
-              }}
-              className="bg-[#fff]  mt-3"
-              value={comm.content}
-              readOnly={true}
-              theme={"snow"}
-            />
-            <div className="bg-white border border-[#444]/50 border-t-0">
-              <div className="ml-2 text-sm">
-                <span className="">created by: </span>
-                <span className=" bg-sky-blue text-sm text-[#0969DA] rounded px-1">
-                  {`${String(comm.creatorAddress).slice(0, 3)}...${String(
-                    comm.creatorAddress
-                  ).slice(-3)}`}
-                </span>
-                <span>, {formatTime(comm.createdAt._seconds)}</span>
-              </div>
+  if (caseData)
+    return (
+      <div className="w-full h-screen bg-[##e7e8ea]">
+        <Navbar />
+        <div className="max-w-[1200px] m-auto mt-3">
+          <h1 className="text-3xl mt-4">{caseData?.summary}</h1>
+
+          <ReactQuill
+            modules={{
+              toolbar: false,
+            }}
+            className="bg-[#fff] mt-3 border-none"
+            value={caseData?.problemStatement}
+            readOnly={true}
+            theme={"snow"}
+          />
+          <div className=" bg-white border border-[#444]/50 border-t-0">
+            <div className="ml-2 text-sm">
+              <span>created by: </span>
+              <span className="  bg-sky-blue text-sm text-[#0969DA] rounded px-1">
+                {`${String(caseData?.creator).slice(0, 3)}...${String(
+                  caseData?.creator
+                ).slice(-3)}`}
+              </span>
+              <span>
+                ,{" "}
+                {caseData?.createdAt &&
+                  formatTime(caseData?.createdAt._seconds)}
+              </span>
             </div>
           </div>
-        ))}
 
-        <div className="mb-12">
-          <ReactQuill
-            value={content}
-            onChange={setContent}
-            className="bg-[#fff] mt-12"
-            theme="snow"
-          />
-          <div className="flex justify-end">
-            <button
-              onClick={() => {
-                createComment();
-              }}
-              className="bg-fun-blue text-white p-2 rounded mt-2"
-            >
-              publish
-            </button>
+          <div className="flex flex-row w-full justify-between">
+            {caseData && <Outcomes caseData={caseData} />}
+            {caseData && <AddressList caseData={caseData} />}
+          </div>
+          {comments?.map((comm) => (
+            <div key={comm.id}>
+              <ReactQuill
+                key={comm?.id}
+                modules={{
+                  toolbar: false,
+                }}
+                className="bg-[#fff]  mt-3"
+                value={comm.content}
+                readOnly={true}
+                theme={"snow"}
+              />
+              <div className="bg-white border border-[#444]/50 border-t-0">
+                <div className="ml-2 text-sm">
+                  <span className="">created by: </span>
+                  <span className=" bg-sky-blue text-sm text-[#0969DA] rounded px-1">
+                    {`${String(comm.creatorAddress).slice(0, 3)}...${String(
+                      comm.creatorAddress
+                    ).slice(-3)}`}
+                  </span>
+                  <span>, {formatTime(comm.createdAt._seconds)}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+
+          <div className="mb-12">
+            <ReactQuill
+              value={content}
+              onChange={setContent}
+              className="bg-[#fff] mt-12"
+              theme="snow"
+            />
+            <div className="flex justify-end">
+              {caseData?.contractCaseId !== null && (
+                <DropTheMic caseId={caseData.contractCaseId} />
+              )}
+              <button
+                onClick={() => {
+                  createComment();
+                }}
+                className="bg-fun-blue ml-3 text-white p-2 rounded mt-2"
+              >
+                publish
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
 }
