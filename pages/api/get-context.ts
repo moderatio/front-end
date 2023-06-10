@@ -2,14 +2,13 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { db } from "../../config/firebaseConfig";
 import { type ICase } from "@/types/case";
 import { type IComment } from "@/types/comment";
+import axios from "axios";
 
 interface GetRequest extends NextApiRequest {
   query: {
     caseId: string;
   };
 }
-
-/** */
 
 export default async function handler(req: GetRequest, res: NextApiResponse) {
   try {
@@ -53,16 +52,55 @@ export default async function handler(req: GetRequest, res: NextApiResponse) {
       rawComments = rawComments.concat("  ").concat(comment.content);
     });
 
+    const gptPrompt = `
+You will be given a case description and, based on utilitarianism, your task is to decide what the best ruling option is.
+
+For example:
+
+Case description: A trolley is speeding down a track, about to hit and kill five people. You have the option to pull a lever, diverting the trolley to another track where it will kill one person instead. What do you do?
+
+Comments:
+0. 2 of the 5 people are criminals.
+1. The one person is a doctor.
+
+Outcomes: 
+0. Pull the lever, diverting the trolley to the other track where it will kill one person.
+1. Do nothing, allowing the trolley to kill the five people on the current track.
+
+Choice: 1
+------`;
+
     const rawText = ""
+      .concat(gptPrompt)
       .concat(caseData.problemStatement)
       .concat(
-        "   the outcomes possible are the following. Each is preceded by the choice number it represents:   "
+        `Outcomes:  
+      `
       )
       .concat(rawOutcomes)
-      .concat("   ")
-      .concat(rawComments);
+      .concat(
+        `Comments:   
+       `
+      )
+      .concat(rawComments).concat(`
+      Choice: `);
 
-    res.status(200).json(rawText);
+    const gptRes = await axios.post(
+      "https://api.openai.com/v1/completions",
+      {
+        model: "text-davinci-003",
+        prompt: rawText,
+        temperature: 0,
+        max_tokens: 1,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.OPENAI_KEY}`,
+        },
+      }
+    );
+
+    res.status(200).json({ result: Number(gptRes.data.choices[0].text) });
   } catch (error) {
     console.error("Error retrieving case: ", error);
     res.status(500).json({ error: "Unable to retrieve case." });
