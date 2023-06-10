@@ -1,5 +1,6 @@
 export interface ICase {
   id: string;
+  contractCaseId: number;
   summary: string;
   addresses: string[];
   outcomes: string[];
