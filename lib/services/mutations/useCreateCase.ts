@@ -10,6 +10,7 @@ interface Params {
   outcomes: string[];
   creator: string;
   problemStatement: string;
+  rulerAddress: string;
   // transactionHash: string;
   contractCaseId: number;
 }

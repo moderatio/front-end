@@ -16,6 +16,8 @@ const CreateCasePage = () => {
   const [problemStatement, setProblemStatement] = useState("");
 
   const [summary, setSummary] = useState("");
+  const [rulerAddress, setRulerAddress] = useState("");
+
   const { address } = useAccount();
   const [addresses, setAddresses] = useState<string[]>([""]);
   const [outcomes, setOutcomes] = useState<string[]>([""]);
@@ -40,6 +42,7 @@ const CreateCasePage = () => {
         problemStatement,
         summary,
         // transactionHash: tx.hash,
+        rulerAddress,
         contractCaseId,
       });
     }
@@ -124,6 +127,23 @@ const CreateCasePage = () => {
         >
           add new outcomes
         </button>
+
+        <p className="mt-3">
+          Finally, add a contract that will run based on the outcome of the
+          decision. This step is optional, you can leave it blank.
+        </p>
+        <div className="mt-3">
+          <input
+            value={rulerAddress}
+            onChange={(e) => {
+              setRulerAddress(e.target.value);
+            }}
+            className=" appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="ruler"
+            type="text"
+            placeholder="ruler address"
+          />
+        </div>
 
         <div className="flex items-center m-auto">
           <button
