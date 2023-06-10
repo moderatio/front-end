@@ -6,6 +6,8 @@ import DynamicInputForm from "@/components/dynamicInputForm";
 import { useAccount } from "wagmi";
 import { toast } from "react-toastify";
 import { useCreateCase } from "@/lib/services/mutations/useCreateCase";
+import { useContractCreateCase } from "@/lib/wagmi/useContractCreateCase";
+
 
 const ReactQuill = dynamic(async () => await import("react-quill"), {
   ssr: false,
@@ -18,20 +20,29 @@ const CreateCasePage = () => {
   const { address } = useAccount();
   const [addresses, setAddresses] = useState<string[]>([""]);
   const [outcomes, setOutcomes] = useState<string[]>([""]);
+
+
   const { mutate: create } = useCreateCase();
+  const { writeAsync: createCase } = useContractCreateCase({ participants: addresses });
 
   const handleSubmit = async () => {
     // TODO: use transactionHash of created contract to assing in back-end the contractId
     if (!address) toast.error("you must sign up with your wallet first");
-    else
+    else if (!createCase) toast.error("error with create case");
+    else {
+      const tx = await createCase();
+      const value = await tx.wait(1);
+      const contractCaseId = parseInt(value.logs[0].topics[1], 16);
       create({
         outcomes,
         addresses,
         creator: address,
         problemStatement,
         summary,
-        transactionHash: "",
+        // transactionHash: tx.hash,
+        contractCaseId
       });
+    }
   };
 
   return (

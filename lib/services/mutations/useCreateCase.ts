@@ -10,21 +10,15 @@ interface Params {
   outcomes: string[];
   creator: string;
   problemStatement: string;
-  transactionHash: string;
+  // transactionHash: string;
+  contractCaseId: number;
 }
 
 const createCase = async (params: Params) => {
   try {
-    const { summary, addresses, problemStatement, creator, outcomes } = params;
     const res = await axios.post<{ id: string }>(
       "/api/create-case",
-      {
-        summary,
-        addresses,
-        problemStatement,
-        creator,
-        outcomes,
-      },
+      { ...params },
       {
         headers: {
           "Content-Type": "application/json",
