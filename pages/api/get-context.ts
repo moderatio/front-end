@@ -31,7 +31,12 @@ export default async function handler(req: GetRequest, res: NextApiResponse) {
       .orderBy("createdAt", "asc")
       .get();
 
+    // if case data was already setted, return the case data
     const caseData = caseDoc.data() as ICase;
+
+    if (caseData.result !== null) {
+      res.status(200).json({ result: caseData.result });
+    }
 
     let rawOutcomes: string = "";
 
@@ -99,6 +104,16 @@ Choice: 1
         },
       }
     );
+
+    // Update the "result" property of the case document
+    // to avoid wasting gpt-3 resources
+
+    await db
+      .collection("cases")
+      .doc(String(caseId))
+      .update({
+        result: Number(gptRes.data.choices[0].text),
+      });
 
     res.status(200).json({ result: Number(gptRes.data.choices[0].text) });
   } catch (error) {

@@ -8,4 +8,5 @@ export interface ICase {
   problemStatement: string;
   createdAt: { _seconds: number };
   commentsAmount: number;
+  result?: number;
 }
