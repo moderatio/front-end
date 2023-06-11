@@ -17,10 +17,9 @@ export default async function handler(req: GetRequest, res: NextApiResponse) {
     // fetch problemStatement, comments and outocmes and puts everything in a single
     // text to return for the google API.
 
-    console.log("contract case Id", contractCaseId);
     const caseDoc = await db
       .collection("cases")
-      .where("contractCaseId", "==", 0)
+      .where("contractCaseId", "==", Number(contractCaseId))
       .get();
 
     if (caseDoc.empty) {
@@ -36,12 +35,6 @@ export default async function handler(req: GetRequest, res: NextApiResponse) {
       .collection("comments")
       .orderBy("createdAt", "asc")
       .get();
-
-    // if case data was already setted, return the case data
-
-    if (caseData.result !== null) {
-      res.status(200).json({ result: caseData.result });
-    }
 
     let rawOutcomes: string = "";
 
@@ -112,6 +105,8 @@ Choice: 1
 
     // Update the "result" property of the case document
     // to avoid wasting gpt-3 resources
+
+    console.log(gptRes.data.choices[0]);
 
     // TODO: rethink this later, because if any new comment comes,
     // or is edited, the case outcome will be outdated
