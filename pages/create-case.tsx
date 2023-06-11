@@ -3,7 +3,7 @@ import Navbar from "../components/navbar";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
 import DynamicInputForm from "@/components/dynamicInputForm";
-import { useAccount } from "wagmi";
+import { type Address, useAccount } from "wagmi";
 import { toast } from "react-toastify";
 import { useCreateCase } from "@/lib/services/mutations/useCreateCase";
 import { useContractCreateCase } from "@/lib/wagmi/useContractCreateCase";
@@ -25,6 +25,7 @@ const CreateCasePage = () => {
   const { mutate: create } = useCreateCase();
   const { writeAsync: createCase } = useContractCreateCase({
     participants: addresses,
+    ruler: rulerAddress as Address,
   });
 
   const handleSubmit = async () => {

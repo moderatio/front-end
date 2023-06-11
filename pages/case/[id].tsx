@@ -71,7 +71,7 @@ export default function Page() {
     );
   }
 
-  if (!caseData) {
+  if (!caseData || !router.query.id) {
     <div className="w-full h-screen bg-[##e7e8ea]">
       <Navbar />
       <div className="max-w-[1200px] m-auto mt-5">
