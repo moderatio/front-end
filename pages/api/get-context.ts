@@ -6,13 +6,13 @@ import axios from "axios";
 
 interface GetRequest extends NextApiRequest {
   query: {
-    contractCaseId: string;
+    caseId: string;
   };
 }
 
 export default async function handler(req: GetRequest, res: NextApiResponse) {
   try {
-    const { contractCaseId } = req.query;
+    const { caseId: contractCaseId } = req.query;
 
     // fetch problemStatement, comments and outocmes and puts everything in a single
     // text to return for the google API.
@@ -113,12 +113,14 @@ Choice: 1
     // Update the "result" property of the case document
     // to avoid wasting gpt-3 resources
 
-    await db
-      .collection("cases")
-      .doc(String(caseDoc.docs[0].id))
-      .update({
-        result: Number(gptRes.data.choices[0].text),
-      });
+    // TODO: rethink this later, because if any new comment comes,
+    // or is edited, the case outcome will be outdated
+    // await db
+    //   .collection("cases")
+    //   .doc(String(caseDoc.docs[0].id))
+    //   .update({
+    //     result: Number(gptRes.data.choices[0].text),
+    //   });
 
     res.status(200).json({ result: Number(gptRes.data.choices[0].text) });
   } catch (error) {
