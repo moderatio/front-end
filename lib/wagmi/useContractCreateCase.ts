@@ -10,7 +10,6 @@ interface Args {
 }
 
 export function useContractCreateCase({ ruler, participants }: Args) {
-  console.log({ ruler, participants });
   if (!ruler) ruler = constants.AddressZero;
   const { config } = usePrepareContractWrite({
     address: `0x${contractAddress}`,

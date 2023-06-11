@@ -6,33 +6,38 @@ import axios from "axios";
 
 interface GetRequest extends NextApiRequest {
   query: {
-    caseId: string;
+    contractCaseId: string;
   };
 }
 
 export default async function handler(req: GetRequest, res: NextApiResponse) {
   try {
-    const { caseId } = req.query;
+    const { contractCaseId } = req.query;
 
     // fetch problemStatement, comments and outocmes and puts everything in a single
     // text to return for the google API.
 
-    const caseDoc = await db.collection("cases").doc(String(caseId)).get();
+    console.log("contract case Id", contractCaseId);
+    const caseDoc = await db
+      .collection("cases")
+      .where("contractCaseId", "==", 0)
+      .get();
 
-    if (!caseDoc.exists) {
+    if (caseDoc.empty) {
       res.status(404).json({ error: "Case not found." });
       return;
     }
 
+    const caseData = caseDoc.docs[0].data() as ICase;
+
     const snapshot = await db
       .collection("cases")
-      .doc(String(caseId))
+      .doc(String(caseDoc.docs[0].id))
       .collection("comments")
       .orderBy("createdAt", "asc")
       .get();
 
     // if case data was already setted, return the case data
-    const caseData = caseDoc.data() as ICase;
 
     if (caseData.result !== null) {
       res.status(200).json({ result: caseData.result });
@@ -110,7 +115,7 @@ Choice: 1
 
     await db
       .collection("cases")
-      .doc(String(caseId))
+      .doc(String(caseDoc.docs[0].id))
       .update({
         result: Number(gptRes.data.choices[0].text),
       });
