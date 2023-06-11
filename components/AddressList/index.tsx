@@ -19,7 +19,7 @@ export const AddressList = ({ caseData }: Props) => {
 
   const hasDroppedTheMic = (addr: string) => {
     const idx = caseData.addresses.indexOf(addr);
-    if (idx === 2) return true;
+    if (onChainData && onChainData[idx] === 2) return true;
     return false;
   };
 
@@ -33,7 +33,9 @@ export const AddressList = ({ caseData }: Props) => {
         {caseData.addresses.map((addr, index) => (
           <div className="text-sm" key={addr}>
             <span className="text-fun-blue">{addr}</span>
-            {hasDroppedTheMic(addr) && <span>voted</span>}
+            {hasDroppedTheMic(addr) && (
+              <span className="ml-1 text-[#00A300]">(voted)</span>
+            )}
           </div>
         ))}
       </div>

@@ -94,6 +94,22 @@ const CreateCasePage = () => {
         </p>
 
         <DynamicInputForm
+          label="outcome"
+          inputFields={outcomes}
+          setter={setOutcomes}
+        />
+        <button
+          onClick={() => {
+            const updateOutcomes = [...outcomes];
+            updateOutcomes.push("");
+            setOutcomes(updateOutcomes);
+          }}
+          className="bg-dark-blue font-bold text-white p-2 rounded mt-2"
+        >
+          add new outcomes
+        </button>
+
+        <DynamicInputForm
           label="address"
           inputFields={addresses}
           setter={setAddresses}
@@ -112,22 +128,6 @@ const CreateCasePage = () => {
           The outcomes also must be pre-determined below. The AI will ponder
           which one to choose.
         </p>
-
-        <DynamicInputForm
-          label="outcome"
-          inputFields={outcomes}
-          setter={setOutcomes}
-        />
-        <button
-          onClick={() => {
-            const updateOutcomes = [...outcomes];
-            updateOutcomes.push("");
-            setOutcomes(updateOutcomes);
-          }}
-          className="bg-dark-blue font-bold text-white p-2 rounded mt-2"
-        >
-          add new outcomes
-        </button>
 
         <p className="mt-3">
           Finally, add a contract that will run based on the outcome of the

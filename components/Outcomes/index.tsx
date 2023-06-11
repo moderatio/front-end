@@ -36,10 +36,10 @@ export const Outcomes = ({ caseData }: Props) => {
           </div>
         ))}
         <div className="text-md text-red-500 mt-2">
-          {(data as any).status !== 2 && (
+          {(data as any)?.status !== 2 && (
             <span className="text-[#FF0000]">No consensus reached yet</span>
           )}
-          {(data as any).status === 2 && (
+          {(data as any)?.status === 2 && (
             <span className="text-green">Consensus reached</span>
           )}
         </div>
