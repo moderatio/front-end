@@ -1,5 +1,5 @@
 import { type ICase } from "@/types/case";
-import { useContractRead, useContractReads } from "wagmi";
+import { useContractRead } from "wagmi";
 import moderatioAbi from "@/abi/Moderatio.json";
 import { useRequest } from "@/lib/wagmi/useRequest";
 
