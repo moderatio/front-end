@@ -15,7 +15,7 @@ export const Outcomes = ({ caseData }: Props) => {
     args: [caseData.contractCaseId],
   });
 
-  const { writeAsync: request, isLoading } = useRequest({ contractId: 1 });
+  const { writeAsync: request, isLoading } = useRequest({ contractId: caseData.contractCaseId });
 
   return (
     <div className="w-1/2">
