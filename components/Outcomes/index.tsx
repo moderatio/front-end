@@ -1,5 +1,5 @@
 import { type ICase } from "@/types/case";
-import { useContractReads } from "wagmi";
+import { useContractRead, useContractReads } from "wagmi";
 import moderatioAbi from "@/abi/Moderatio.json";
 import { useEffect } from "react";
 
@@ -8,20 +8,12 @@ interface Props {
 }
 
 export const Outcomes = ({ caseData }: Props) => {
-  const { data } = useContractReads({
-    contracts: [
-      {
-        address: `0x${String(process.env.NEXT_PUBLIC_MODERATIO_ADDRESS)}`,
-        abi: moderatioAbi,
-        functionName: "cases",
-        args: [caseData.contractCaseId],
-      },
-    ],
+  const { data: readyToRequest } = useContractRead({
+    address: `0x${String(process.env.NEXT_PUBLIC_MODERATIO_ADDRESS)}`,
+    abi: moderatioAbi,
+    functionName: "isCaseReadyToRequest",
+    args: [caseData.contractCaseId],
   });
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   return (
     <div className="w-1/2">
@@ -36,11 +28,16 @@ export const Outcomes = ({ caseData }: Props) => {
           </div>
         ))}
         <div className="text-md text-red-500 mt-2">
-          {(data as any)?.status !== 2 && (
-            <span className="text-[#FF0000]">No consensus reached yet</span>
+          {readyToRequest === true && (
+            <button
+              onClick={() => {}}
+              className="bg-dark-blue p-1  mt-2  rounded text-white"
+            >
+              Ready to judge!
+            </button>
           )}
-          {(data as any)?.status === 2 && (
-            <span className="text-green">Consensus reached</span>
+          {readyToRequest === false && (
+            <span className="text-[#FF0000]">ready to request</span>
           )}
         </div>
       </div>
