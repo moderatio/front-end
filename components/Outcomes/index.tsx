@@ -1,7 +1,7 @@
 import { type ICase } from "@/types/case";
 import { useContractRead, useContractReads } from "wagmi";
 import moderatioAbi from "@/abi/Moderatio.json";
-import { useEffect } from "react";
+import { useRequest } from "@/lib/wagmi/useRequest";
 
 interface Props {
   caseData: ICase;
@@ -14,6 +14,8 @@ export const Outcomes = ({ caseData }: Props) => {
     functionName: "isCaseReadyToRequest",
     args: [caseData.contractCaseId],
   });
+
+  const { writeAsync: request, isLoading } = useRequest({ contractId: 1 });
 
   return (
     <div className="w-1/2">
@@ -30,10 +32,16 @@ export const Outcomes = ({ caseData }: Props) => {
         <div className="text-md text-red-500 mt-2">
           {readyToRequest === true && (
             <button
-              onClick={() => {}}
+              onClick={() => {
+                if (request) request();
+              }}
               className="bg-dark-blue p-1  mt-2  rounded text-white"
             >
-              Ready to judge!
+              {isLoading ? (
+                <span>loading...</span>
+              ) : (
+                <span> Ready to judge!</span>
+              )}
             </button>
           )}
           {readyToRequest === false && (
